@@ -1,0 +1,21 @@
+{
+  "name": "Ruby on Rails",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "VARIANT": "3.0"
+    }
+  },
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "ruby.rubyVersion": "3.0"
+  },
+  "extensions": [
+    "rebornix.ruby",
+    "kaiwood.endwise",
+    "wingrunr2.ruby-test-adapter",
+    "migrateapp.migrate"
+  ],
+  "postCreateCommand": "bundle install && rails db:create && rails db:migrate"
+}
