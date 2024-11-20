@@ -1,31 +1,30 @@
-# Use the official Ruby image.
-# https://hub.docker.com/_/ruby
+# Użyj oficjalnego obrazu Ruby
 FROM ruby:3.0
 
-# Install dependencies
+# Zainstaluj zależności systemowe
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 
-# Set an environment variable where the Ruby Gem will be installed
+# Ustaw zmienną środowiskową dla katalogu aplikacji
 ENV INSTALL_PATH /app
 RUN mkdir -p $INSTALL_PATH
 
-# Change working directory
+# Zmień katalog roboczy
 WORKDIR $INSTALL_PATH
 
-# Copy Gemfile and Gemfile.lock
+# Skopiuj Gemfile i Gemfile.lock
 COPY Gemfile Gemfile.lock ./
 
-# Install dependencies
+# Zainstaluj zależności Ruby
 RUN gem install bundler && bundle install
 
-# Copy the main application
+# Skopiuj resztę aplikacji
 COPY . .
 
-# Add a script to be executed every time the container starts.
+# Dodaj skrypt do uruchamiania kontenera
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
-# Start the main process.
+# Uruchom serwer Rails
 CMD ["rails", "server", "-b", "0.0.0.0"]
